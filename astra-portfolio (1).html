@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Astra — Driven by Stars</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0d1b3e; --deep:#060e26; --mid:#1a2d5a;
+  --steel:#2e5fa3; --lb:#7aafd4; --pale:#b8d4f0; --ice:#daeaf8; --white:#eef4fc;
+  --gold:#c8a84b; --goldb:#f0cc6a; --muted:#8aaccc;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--deep);color:var(--white);font-family:'Raleway',sans-serif;font-weight:300;overflow-x:hidden;}
+
+/* STARFIELD */
+.starfield{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
+.star{position:absolute;background:white;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite;opacity:0;}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.8);}50%{opacity:var(--o,.8);transform:scale(1.3);}}
+
+/* GLOW ORBS */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(90px);animation:orbp var(--op,8s) ease-in-out infinite;}
+@keyframes orbp{0%,100%{opacity:.12;transform:scale(1);}50%{opacity:.24;transform:scale(1.15);}}
+
+/* SHOOTING STARS */
+.shoot{position:fixed;width:1px;height:1px;background:white;border-radius:50%;pointer-events:none;z-index:0;opacity:0;animation:shoot var(--sd,2s) linear var(--dl,0s) infinite;}
+@keyframes shoot{0%{opacity:0;transform:translate(var(--sx),var(--sy)) scaleX(1);}8%{opacity:1;}92%{opacity:1;}100%{opacity:0;transform:translate(var(--ex),var(--ey)) scaleX(120);}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 4rem;background:rgba(6,14,38,.9);backdrop-filter:blur(18px);border-bottom:1px solid rgba(200,168,75,.3);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:900;color:var(--pale);letter-spacing:.18em;text-decoration:none;text-shadow:0 0 25px rgba(184,212,240,.5);}
+.nav-logo span{color:var(--gold);text-shadow:0 0 18px rgba(200,168,75,.8);}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;transition:all .3s;}
+.nav-links a:hover{color:var(--gold);text-shadow:0 0 12px rgba(200,168,75,.6);}
+
+/* MARQUEE */
+.marquee-wrap{position:relative;z-index:1;overflow:hidden;padding:.65rem 0;background:linear-gradient(90deg,rgba(200,168,75,.06),rgba(46,95,163,.14),rgba(200,168,75,.06));border-top:1px solid rgba(200,168,75,.35);border-bottom:1px solid rgba(200,168,75,.35);margin-top:71px;}
+.marquee-track{display:flex;white-space:nowrap;animation:msroll 22s linear infinite;}
+@keyframes msroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.mitem{font-family:'Cinzel',serif;font-size:.7rem;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);padding:0 3rem;text-shadow:0 0 12px rgba(200,168,75,.55);}
+.msep{color:var(--lb);}
+
+/* HERO */
+.hero{position:relative;min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5rem 2rem;z-index:1;overflow:hidden;}
+.galaxy{position:absolute;width:820px;height:820px;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:gspin 90s linear infinite;opacity:.09;}
+@keyframes gspin{from{transform:translate(-50%,-50%) rotate(0);}to{transform:translate(-50%,-50%) rotate(360deg);}}
+.hring{position:absolute;border-radius:50%;border:1px solid rgba(200,168,75,.14);top:50%;left:50%;transform:translate(-50%,-50%);animation:rpulse 5s ease-in-out infinite;}
+@keyframes rpulse{0%,100%{opacity:.25;transform:translate(-50%,-50%) scale(1);}50%{opacity:.55;transform:translate(-50%,-50%) scale(1.05);}}
+.fstar{position:absolute;pointer-events:none;animation:flt var(--fs,5s) ease-in-out infinite var(--fd,0s);}
+@keyframes flt{0%,100%{transform:translateY(0) rotate(0) scale(1);opacity:.8;}50%{transform:translateY(-18px) rotate(15deg) scale(1.1);opacity:1;}}
+
+.eyebrow{font-size:.67rem;letter-spacing:.42em;text-transform:uppercase;color:var(--lb);margin-bottom:1.6rem;font-weight:600;animation:fadeUp .9s ease .2s both;}
+.hero-title{font-family:'Cinzel',serif;font-size:clamp(5.5rem,15vw,11rem);font-weight:900;color:var(--pale);line-height:1;letter-spacing:.08em;margin-bottom:.5rem;animation:fadeUp .9s ease .4s both;animation-name:fadeUp,titleG;}
+@keyframes titleG{0%,100%{text-shadow:0 0 50px rgba(184,212,240,.7),0 0 100px rgba(184,212,240,.35);}50%{text-shadow:0 0 80px rgba(184,212,240,1),0 0 160px rgba(184,212,240,.55),0 0 220px rgba(122,175,212,.3);}}
+.hero-slogan-wrap{display:flex;align-items:center;justify-content:center;gap:1.4rem;animation:fadeUp .9s ease .6s both;}
+.sline{height:1px;width:90px;animation:fadeUp .9s ease .7s both;}
+.sline.l{background:linear-gradient(90deg,transparent,var(--gold));}
+.sline.r{background:linear-gradient(90deg,var(--gold),transparent);}
+.hero-slogan{font-family:'Cinzel',serif;font-size:clamp(1rem,3vw,1.55rem);color:var(--goldb);letter-spacing:.3em;font-weight:700;text-shadow:0 0 22px rgba(240,204,106,.75),0 0 50px rgba(200,168,75,.4);}
+.hero-desc{max-width:490px;font-size:.97rem;line-height:2;color:var(--muted);margin:1.8rem auto 3rem;animation:fadeUp .9s ease .8s both;}
+.hero-cta{display:flex;gap:1.2rem;justify-content:center;animation:fadeUp .9s ease 1s both;}
+.btn-g{background:transparent;color:var(--white);padding:.95rem 2.5rem;border:1px solid var(--gold);font-family:'Raleway',sans-serif;font-size:.73rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;cursor:pointer;text-decoration:none;transition:all .35s;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);box-shadow:0 0 22px rgba(200,168,75,.2),inset 0 0 22px rgba(200,168,75,.04);position:relative;overflow:hidden;}
+.btn-g:hover{box-shadow:0 0 50px rgba(200,168,75,.55),inset 0 0 30px rgba(200,168,75,.1);border-color:var(--goldb);}
+.btn-b{background:transparent;color:var(--pale);padding:.95rem 2.5rem;border:1px solid rgba(122,175,212,.4);font-family:'Raleway',sans-serif;font-size:.73rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;cursor:pointer;text-decoration:none;transition:all .35s;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);box-shadow:0 0 15px rgba(122,175,212,.08);}
+.btn-b:hover{border-color:var(--pale);box-shadow:0 0 35px rgba(122,175,212,.35);color:white;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(35px);}to{opacity:1;transform:translateY(0);}}
+
+/* SECTIONS */
+section{position:relative;z-index:1;padding:6rem 4rem;}
+.slbl{font-size:.66rem;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.8rem;text-shadow:0 0 10px rgba(200,168,75,.4);}
+.stitle{font-family:'Cinzel',serif;font-size:clamp(1.8rem,4vw,3rem);color:var(--pale);font-weight:700;line-height:1.15;margin-bottom:.8rem;text-shadow:0 0 30px rgba(184,212,240,.25);}
+.ssub{color:var(--muted);font-size:.96rem;line-height:1.9;max-width:540px;margin-bottom:3rem;}
+.divider{width:80px;height:2px;margin:1rem 0 2rem;background:linear-gradient(90deg,var(--gold),var(--lb),transparent);box-shadow:0 0 10px rgba(200,168,75,.4);}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1100px;margin:0 auto;}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:2rem;}
+.stat-card{background:rgba(46,95,163,.1);border:1px solid rgba(200,168,75,.2);padding:1.6rem;position:relative;overflow:hidden;transition:all .4s;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(to bottom,var(--gold),var(--lb));box-shadow:0 0 10px rgba(200,168,75,.5);}
+.stat-card:hover{border-color:rgba(200,168,75,.5);box-shadow:0 0 35px rgba(200,168,75,.12);}
+.snum{font-family:'Cinzel',serif;font-size:2.4rem;color:var(--pale);font-weight:700;line-height:1;text-shadow:0 0 20px rgba(184,212,240,.5);}
+.slabel{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:.4rem;font-weight:600;}
+
+/* ORBIT */
+.orbit-wrap{display:flex;align-items:center;justify-content:center;}
+.orbit{position:relative;width:340px;height:340px;}
+.oc{position:absolute;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);}
+.oc:nth-child(1){width:100%;height:100%;border:1px solid rgba(200,168,75,.15);animation:op2 7s ease-in-out infinite 0s;}
+.oc:nth-child(2){width:68%;height:68%;border:1px solid rgba(122,175,212,.25);animation:op2 7s ease-in-out infinite 1.2s;}
+.oc:nth-child(3){width:36%;height:36%;border:1px solid rgba(184,212,240,.45);background:rgba(46,95,163,.15);animation:op2 7s ease-in-out infinite 2.4s;}
+@keyframes op2{0%,100%{box-shadow:none;}50%{box-shadow:0 0 22px rgba(122,175,212,.2);}}
+.ocenter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:2;}
+.odot{position:absolute;border-radius:50%;top:50%;left:50%;transform-origin:0 0;animation:oanim var(--dur,8s) linear infinite;box-shadow:0 0 8px currentColor;}
+@keyframes oanim{from{transform:rotate(var(--s,0deg)) translateX(var(--r,150px)) rotate(calc(-1*var(--s,0deg)));}to{transform:rotate(calc(var(--s,0deg)+360deg)) translateX(var(--r,150px)) rotate(calc(-1*(var(--s,0deg)+360deg)));}}
+.olbl{position:absolute;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap;font-weight:600;}
+
+/* PORTFOLIO */
+.port-tabs{display:flex;border-bottom:1px solid rgba(200,168,75,.2);max-width:1100px;margin:0 auto 2.5rem;}
+.port-tab{padding:.85rem 2rem;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .3s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Raleway',sans-serif;}
+.port-tab.active{color:var(--gold);border-bottom-color:var(--gold);text-shadow:0 0 12px rgba(200,168,75,.5);}
+.port-tab:hover{color:var(--pale);}
+.port-content{display:none;max-width:1100px;margin:0 auto;}
+.port-content.active{display:block;}
+
+/* ENG CARDS */
+.eng-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.ec{background:rgba(13,27,62,.6);border:1px solid rgba(122,175,212,.12);padding:2rem;position:relative;overflow:hidden;transition:all .4s;}
+.ec::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--steel),var(--gold),var(--lb));transform:scaleX(0);transform-origin:left;transition:transform .5s;box-shadow:0 0 12px rgba(200,168,75,.5);}
+.ec:hover{border-color:rgba(200,168,75,.32);transform:translateY(-7px);box-shadow:0 22px 65px rgba(0,0,0,.4),0 0 35px rgba(200,168,75,.09);}
+.ec:hover::after{transform:scaleX(1);}
+.eicon{font-size:2rem;margin-bottom:1.1rem;display:block;}
+.ec h3{font-family:'Cinzel',serif;font-size:1rem;color:var(--pale);margin-bottom:.8rem;font-weight:700;}
+.ec p{font-size:.87rem;color:var(--muted);line-height:1.75;}
+.tag{display:inline-block;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;background:rgba(46,95,163,.25);color:var(--lb);padding:.25rem .65rem;border-radius:2px;margin-top:1rem;margin-right:.3rem;font-weight:700;border:1px solid rgba(122,175,212,.25);}
+
+/* CAR */
+.car-box{background:rgba(6,14,38,.85);border:1px solid rgba(200,168,75,.22);padding:3rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden;box-shadow:0 0 70px rgba(200,168,75,.06),inset 0 0 60px rgba(46,95,163,.05);}
+.car-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--lb),var(--gold),transparent);box-shadow:0 0 22px rgba(200,168,75,.5);}
+.car-wrap{margin:2rem auto;max-width:520px;filter:drop-shadow(0 0 22px rgba(122,175,212,.25));}
+.car-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:2rem;border:1px solid rgba(122,175,212,.12);}
+.cs{background:rgba(13,27,62,.85);padding:1.4rem;text-align:center;}
+.csv{font-family:'Cinzel',serif;font-size:1.5rem;color:var(--pale);font-weight:700;text-shadow:0 0 15px rgba(184,212,240,.4);}
+.csl{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:.3rem;font-weight:600;}
+
+/* ENTERPRISE */
+.ent-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.entc{background:rgba(13,27,62,.6);border:1px solid rgba(122,175,212,.12);padding:2rem;transition:all .4s;}
+.entc:hover{border-color:rgba(200,168,75,.3);box-shadow:0 0 32px rgba(200,168,75,.09);}
+.entc h3{font-family:'Cinzel',serif;font-size:1rem;color:var(--pale);margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:1px solid rgba(200,168,75,.2);font-weight:700;}
+.el{list-style:none;}
+.el li{font-size:.87rem;color:var(--muted);padding:.55rem 0;border-bottom:1px solid rgba(122,175,212,.07);display:flex;justify-content:space-between;align-items:center;}
+.el li:last-child{border-bottom:none;}
+.ev{font-family:'Cinzel',serif;font-size:.83rem;color:var(--gold);font-weight:700;text-shadow:0 0 8px rgba(200,168,75,.4);}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1.2rem;max-width:1100px;margin:0 auto;}
+.tc{background:rgba(6,14,38,.75);border:1px solid rgba(122,175,212,.12);padding:2rem 1.2rem;text-align:center;transition:all .4s;position:relative;overflow:hidden;}
+.tc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--steel),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .5s;box-shadow:0 0 14px rgba(200,168,75,.5);}
+.tc:hover{border-color:rgba(200,168,75,.38);transform:translateY(-9px);box-shadow:0 26px 65px rgba(0,0,0,.45),0 0 45px rgba(200,168,75,.12);}
+.tc:hover::before{transform:scaleX(1);}
+.tav{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--steel),var(--mid));display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-family:'Cinzel',serif;font-size:1.2rem;color:var(--pale);font-weight:700;border:2px solid rgba(200,168,75,.3);box-shadow:0 0 22px rgba(200,168,75,.15),inset 0 0 22px rgba(122,175,212,.1);transition:all .4s;}
+.tc:hover .tav{border-color:var(--gold);box-shadow:0 0 35px rgba(200,168,75,.45);}
+.tname{font-family:'Cinzel',serif;font-size:.95rem;color:var(--pale);margin-bottom:.3rem;font-weight:700;}
+.trole{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.85rem;font-weight:700;text-shadow:0 0 8px rgba(200,168,75,.3);}
+.tdesc{font-size:.79rem;color:var(--muted);line-height:1.7;}
+
+/* TIMELINE */
+.timeline{max-width:780px;margin:0 auto;position:relative;padding-left:2.5rem;}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--gold),var(--steel),transparent);box-shadow:0 0 8px rgba(200,168,75,.3);}
+.tli{position:relative;padding:0 0 3rem 2rem;}
+.tldot{position:absolute;left:-5px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--gold);box-shadow:0 0 16px rgba(200,168,75,.8),0 0 32px rgba(200,168,75,.4);animation:dp 2.5s ease-in-out infinite var(--dd,0s);}
+@keyframes dp{0%,100%{box-shadow:0 0 16px rgba(200,168,75,.8),0 0 32px rgba(200,168,75,.4);}50%{box-shadow:0 0 28px rgba(200,168,75,1),0 0 55px rgba(200,168,75,.6);}}
+.tlph{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.3rem;text-shadow:0 0 8px rgba(200,168,75,.4);}
+.tltitle{font-family:'Cinzel',serif;font-size:1.05rem;color:var(--pale);margin-bottom:.5rem;font-weight:700;}
+.tldesc{font-size:.87rem;color:var(--muted);line-height:1.75;}
+
+/* BG ALT */
+.bg-alt{background:rgba(26,45,90,.1);}
+
+/* FOOTER */
+footer{position:relative;z-index:1;background:rgba(6,14,38,.97);border-top:1px solid rgba(200,168,75,.28);padding:3.5rem 4rem;text-align:center;}
+.flogo{font-family:'Cinzel',serif;font-size:2.2rem;font-weight:900;color:var(--pale);letter-spacing:.18em;margin-bottom:.4rem;text-shadow:0 0 30px rgba(184,212,240,.5);}
+.fslogan{font-size:.7rem;letter-spacing:.38em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;font-weight:700;text-shadow:0 0 14px rgba(200,168,75,.5);}
+.flinks{display:flex;gap:2.5rem;justify-content:center;margin-bottom:2rem;}
+.flinks a{color:var(--muted);text-decoration:none;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;transition:all .3s;font-weight:600;}
+.flinks a:hover{color:var(--gold);text-shadow:0 0 10px rgba(200,168,75,.4);}
+.fcopy{font-size:.72rem;color:rgba(138,172,204,.32);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(42px);transition:opacity .8s ease,transform .8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- GLOW ORBS -->
+<div class="orb" style="width:650px;height:650px;background:rgba(46,95,163,.16);top:-160px;left:-160px;--op:7s;"></div>
+<div class="orb" style="width:550px;height:550px;background:rgba(200,168,75,.09);top:35%;right:-120px;--op:10s;animation-delay:3s;"></div>
+<div class="orb" style="width:420px;height:420px;background:rgba(122,175,212,.1);bottom:8%;left:15%;--op:8s;animation-delay:5s;"></div>
+
+<div class="starfield" id="sf"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span>✦</span> ASTRA</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#journey">Journey</a></li>
+  </ul>
+</nav>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="mitem">✦ Driven by Stars <span class="msep">·</span> Team Astra <span class="msep">·</span> STEM Racing 2025</span>
+    <span class="mitem">✦ Driven by Stars <span class="msep">·</span> Development Class <span class="msep">·</span> Engineering Excellence</span>
+    <span class="mitem">✦ Driven by Stars <span class="msep">·</span> Team Astra <span class="msep">·</span> STEM Racing 2025</span>
+    <span class="mitem">✦ Driven by Stars <span class="msep">·</span> Development Class <span class="msep">·</span> Engineering Excellence</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- Galaxy spiral -->
+  <svg class="galaxy" viewBox="0 0 820 820" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <ellipse cx="410" cy="410" rx="380" ry="97" stroke="#7aafd4" stroke-width="1.5" transform="rotate(-20 410 410)"/>
+    <ellipse cx="410" cy="410" rx="290" ry="74" stroke="#7aafd4" stroke-width="1.2" transform="rotate(12 410 410)"/>
+    <ellipse cx="410" cy="410" rx="195" ry="50" stroke="#c8a84b" stroke-width="1.5" transform="rotate(-6 410 410)"/>
+    <ellipse cx="410" cy="410" rx="105" ry="28" stroke="#b8d4f0" stroke-width="1.2" transform="rotate(8 410 410)"/>
+    <path d="M410,410 Q570,295 720,235 Q815,125 795,62" stroke="#7aafd4" stroke-width="1.5" opacity=".5"/>
+    <path d="M410,410 Q248,515 95,568 Q22,618 52,708" stroke="#7aafd4" stroke-width="1.5" opacity=".5"/>
+    <path d="M410,410 Q522,558 572,700 Q592,790 552,810" stroke="#c8a84b" stroke-width="1" opacity=".4"/>
+    <path d="M410,410 Q298,258 238,115 Q218,24 268,4" stroke="#c8a84b" stroke-width="1" opacity=".4"/>
+  </svg>
+
+  <!-- Rings -->
+  <div class="hring" style="width:520px;height:520px;animation-delay:0s;"></div>
+  <div class="hring" style="width:730px;height:730px;animation-delay:1.5s;border-color:rgba(122,175,212,.07);"></div>
+
+  <!-- Floating spike stars -->
+  <svg class="fstar" style="top:17%;left:9%;--fs:5s;--fd:0s;" width="72" height="72" viewBox="0 0 72 72">
+    <line x1="36" y1="0" x2="36" y2="72" stroke="#b8d4f0" stroke-width="1.6"/>
+    <line x1="0" y1="36" x2="72" y2="36" stroke="#b8d4f0" stroke-width="1.6"/>
+    <line x1="10" y1="10" x2="62" y2="62" stroke="#b8d4f0" stroke-width=".9"/>
+    <line x1="62" y1="10" x2="10" y2="62" stroke="#b8d4f0" stroke-width=".9"/>
+    <circle cx="36" cy="36" r="3.5" fill="#daeaf8"/>
+    <circle cx="36" cy="36" r="8" fill="none" stroke="#b8d4f0" stroke-width=".5" opacity=".4"/>
+  </svg>
+  <svg class="fstar" style="bottom:20%;left:6%;--fs:7s;--fd:2s;" width="44" height="44" viewBox="0 0 44 44">
+    <line x1="22" y1="0" x2="22" y2="44" stroke="#b8d4f0" stroke-width="1.2"/>
+    <line x1="0" y1="22" x2="44" y2="22" stroke="#b8d4f0" stroke-width="1.2"/>
+    <line x1="6" y1="6" x2="38" y2="38" stroke="#b8d4f0" stroke-width=".7"/>
+    <line x1="38" y1="6" x2="6" y2="38" stroke="#b8d4f0" stroke-width=".7"/>
+    <circle cx="22" cy="22" r="2.5" fill="#daeaf8"/>
+  </svg>
+  <svg class="fstar" style="top:20%;right:8%;--fs:4.5s;--fd:.8s;" width="62" height="62" viewBox="0 0 62 62">
+    <line x1="31" y1="0" x2="31" y2="62" stroke="#c8a84b" stroke-width="1.6"/>
+    <line x1="0" y1="31" x2="62" y2="31" stroke="#c8a84b" stroke-width="1.6"/>
+    <line x1="9" y1="9" x2="53" y2="53" stroke="#c8a84b" stroke-width="1"/>
+    <line x1="53" y1="9" x2="9" y2="53" stroke="#c8a84b" stroke-width="1"/>
+    <circle cx="31" cy="31" r="3.5" fill="#f0cc6a"/>
+    <circle cx="31" cy="31" r="9" fill="none" stroke="#c8a84b" stroke-width=".5" opacity=".4"/>
+  </svg>
+  <svg class="fstar" style="bottom:28%;right:7%;--fs:6.5s;--fd:3.5s;" width="36" height="36" viewBox="0 0 36 36">
+    <line x1="18" y1="0" x2="18" y2="36" stroke="#7aafd4" stroke-width="1"/>
+    <line x1="0" y1="18" x2="36" y2="18" stroke="#7aafd4" stroke-width="1"/>
+    <line x1="5" y1="5" x2="31" y2="31" stroke="#7aafd4" stroke-width=".6"/>
+    <line x1="31" y1="5" x2="5" y2="31" stroke="#7aafd4" stroke-width=".6"/>
+    <circle cx="18" cy="18" r="2" fill="#b8d4f0"/>
+  </svg>
+
+  <p class="eyebrow">STEM Racing — Development Class — 2025</p>
+  <h1 class="hero-title">ASTRA</h1>
+
+  <div class="hero-slogan-wrap">
+    <div class="sline l"></div>
+    <p class="hero-slogan">✦ &nbsp; Driven by Stars &nbsp; ✦</p>
+    <div class="sline r"></div>
+  </div>
+
+  <p class="hero-desc">Five students. One shared vision. We design, engineer, and race a miniature CO₂-powered car at the highest level — guided by precision, passion, and the stars above.</p>
+  <div class="hero-cta">
+    <a href="#portfolio" class="btn-g">View Portfolio</a>
+    <a href="#team" class="btn-b">Meet the Team</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="bg-alt">
+  <div class="about-grid">
+    <div class="reveal">
+      <p class="slbl">Who We Are</p>
+      <h2 class="stitle">Racing Toward<br>the Stars</h2>
+      <div class="divider"></div>
+      <p class="ssub">Team Astra is a STEM Racing Development Class team. We design and manufacture a miniature CO₂-powered racing car using professional CAD/CAM tools, real engineering methodology, and a brand identity that reflects our stellar ambitions.</p>
+      <p class="ssub">Our name reflects our drive — just as stars are formed under immense pressure, we thrive on challenge, precision, and the relentless pursuit of excellence.</p>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="snum">5</div><div class="slabel">Team Members</div></div>
+        <div class="stat-card"><div class="snum">2025</div><div class="slabel">Competition Season</div></div>
+        <div class="stat-card"><div class="snum">≥48g</div><div class="slabel">Minimum Car Weight</div></div>
+        <div class="stat-card"><div class="snum">Dev</div><div class="slabel">Competition Class</div></div>
+      </div>
+    </div>
+    <div class="orbit-wrap reveal">
+      <div class="orbit">
+        <div class="oc"></div><div class="oc"></div><div class="oc"></div>
+        <div class="ocenter">
+          <svg width="52" height="52" viewBox="0 0 52 52">
+            <line x1="26" y1="0" x2="26" y2="52" stroke="#b8d4f0" stroke-width="2"/>
+            <line x1="0" y1="26" x2="52" y2="26" stroke="#b8d4f0" stroke-width="2"/>
+            <line x1="7" y1="7" x2="45" y2="45" stroke="#b8d4f0" stroke-width="1.2"/>
+            <line x1="45" y1="7" x2="7" y2="45" stroke="#b8d4f0" stroke-width="1.2"/>
+            <circle cx="26" cy="26" r="5" fill="#daeaf8"/>
+            <circle cx="26" cy="26" r="10" fill="none" stroke="#b8d4f0" stroke-width=".5" opacity=".4"/>
+          </svg>
+          <div style="font-size:.68rem;letter-spacing:.22em;color:#8aaccc;margin-top:.5rem;font-weight:700;">ASTRA</div>
+        </div>
+        <div class="odot" style="width:10px;height:10px;background:var(--gold);color:var(--gold);--r:168px;--dur:14s;--s:0deg;"></div>
+        <div class="odot" style="width:7px;height:7px;background:var(--lb);color:var(--lb);--r:116px;--dur:9s;--s:130deg;"></div>
+        <div class="odot" style="width:6px;height:6px;background:var(--pale);color:var(--pale);--r:62px;--dur:5.5s;--s:250deg;"></div>
+        <div class="olbl" style="top:4%;left:54%;">Design</div>
+        <div class="olbl" style="top:82%;left:54%;">Engineering</div>
+        <div class="olbl" style="top:46%;left:1%;">Enterprise</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div style="max-width:1100px;margin:0 auto;">
+    <p class="slbl reveal">Our Work</p>
+    <h2 class="stitle reveal">The Portfolio</h2>
+    <div class="divider reveal"></div>
+    <p class="ssub reveal">STEM Racing demands two detailed portfolios — Engineering and Enterprise — plus a pit display. Here's what's inside ours.</p>
+  </div>
+  <div class="port-tabs">
+    <button class="port-tab active" onclick="switchTab('engineering',this)">Engineering</button>
+    <button class="port-tab" onclick="switchTab('car',this)">The Car</button>
+    <button class="port-tab" onclick="switchTab('enterprise',this)">Enterprise</button>
+  </div>
+
+  <!-- Engineering -->
+  <div id="tab-engineering" class="port-content active">
+    <div class="eng-grid">
+      <div class="ec reveal"><span class="eicon">⬡</span><h3>CAD Design</h3><p>Designed in Autodesk Inventor from scratch, with precision tolerances meeting STEM Racing Technical Regulations. Every surface refined for weight and aerodynamic performance.</p><span class="tag">Autodesk Inventor</span><span class="tag">3D Modelling</span></div>
+      <div class="ec reveal"><span class="eicon">⚙</span><h3>CAM & Manufacturing</h3><p>Toolpaths generated in Autodesk CAM and executed on a CNC router. Post-processing: progressive sanding, priming, and spray-painting to a competition-ready finish.</p><span class="tag">CNC Machining</span><span class="tag">CAM Toolpaths</span></div>
+      <div class="ec reveal"><span class="eicon">✦</span><h3>Aerodynamic Analysis</h3><p>Virtual wind tunnel testing evaluated airflow patterns and drag coefficient, informing iterative design refinements to maximise straight-line performance.</p><span class="tag">F1 Virtual Wind Tunnel</span><span class="tag">Drag Reduction</span></div>
+      <div class="ec reveal"><span class="eicon">◈</span><h3>Orthographic Drawing</h3><p>Full dimensioned orthographic drawings to engineering standard — front, side, plan, and auxiliary views with annotations ensuring manufacturing accuracy.</p><span class="tag">Technical Drawing</span><span class="tag">Standards Compliant</span></div>
+      <div class="ec reveal"><span class="eicon">◉</span><h3>3D Renders</h3><p>Photorealistic renders using Autodesk Inventor's visualisation suite showcase the car's final form, livery, and material choices for the judging panel.</p><span class="tag">3D Visualisation</span><span class="tag">Livery Renders</span></div>
+      <div class="ec reveal"><span class="eicon">⊕</span><h3>Specifications & Testing</h3><p>All components verified against STEM Racing Technical Regulations. Launch testing validated stability, nose-cone integrity, and 2025 Halo deceleration compliance.</p><span class="tag">Regulations</span><span class="tag">Track Testing</span></div>
+    </div>
+  </div>
+
+  <!-- The Car -->
+  <div id="tab-car" class="port-content">
+    <div class="car-box reveal">
+      <p class="slbl">Engineering Excellence</p>
+      <h3 style="font-family:'Cinzel',serif;font-size:1.85rem;color:var(--pale);margin-bottom:.4rem;text-shadow:0 0 22px rgba(184,212,240,.45);">The Astra Mk.I</h3>
+      <p style="color:var(--muted);font-size:.85rem;letter-spacing:.1em;">CO₂ Powered Miniature Racing Car · Development Class · 2025</p>
+      <div class="car-wrap">
+        <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="255" cy="156" rx="195" ry="11" fill="rgba(122,175,212,.07)"/>
+          <path d="M80,120 L93,77 L163,57 L263,52 L343,57 L403,77 L423,120 Z" fill="#1a3a6e"/>
+          <path d="M193,57 L213,32 L283,29 L313,57 Z" fill="#0d2050"/>
+          <path d="M216,33 L227,33 L222,49 Z" fill="rgba(184,212,240,.3)"/>
+          <path d="M80,120 L48,114 L44,107 L80,98 Z" fill="#1a3a6e"/>
+          <path d="M423,120 L448,114 L451,107 L423,98 Z" fill="#1a3a6e"/>
+          <rect x="412" y="63" width="4" height="37" fill="#c8a84b"/>
+          <rect x="396" y="57" width="32" height="7" rx="2" fill="#c8a84b"/>
+          <rect x="396" y="56" width="32" height="2" rx="1" fill="#f0cc6a" opacity=".6"/>
+          <rect x="50" y="111" width="44" height="5" rx="2" fill="#c8a84b"/>
+          <rect x="62" y="108" width="3" height="9" fill="#c8a84b"/>
+          <circle cx="138" cy="129" r="23" fill="#0d1b3e" stroke="#7aafd4" stroke-width="2"/>
+          <circle cx="138" cy="129" r="11" fill="#1a3a6e" stroke="#b8d4f0" stroke-width="1.2"/>
+          <circle cx="138" cy="129" r="4" fill="#b8d4f0" opacity=".4"/>
+          <circle cx="373" cy="129" r="23" fill="#0d1b3e" stroke="#7aafd4" stroke-width="2"/>
+          <circle cx="373" cy="129" r="11" fill="#1a3a6e" stroke="#b8d4f0" stroke-width="1.2"/>
+          <circle cx="373" cy="129" r="4" fill="#b8d4f0" opacity=".4"/>
+          <path d="M203,55 L223,33 L246,31 L246,53 Z" fill="#c8a84b" opacity=".85"/>
+          <path d="M303,55 L293,31 L313,31 L323,55 Z" fill="#c8a84b" opacity=".65"/>
+          <line x1="163" y1="57" x2="163" y2="120" stroke="#2e5fa3" stroke-width="1.8"/>
+          <line x1="343" y1="57" x2="343" y2="120" stroke="#2e5fa3" stroke-width="1.8"/>
+          <g transform="translate(253,89)">
+            <line x1="0" y1="-13" x2="0" y2="13" stroke="#daeaf8" stroke-width="1.4"/>
+            <line x1="-13" y1="0" x2="13" y2="0" stroke="#daeaf8" stroke-width="1.4"/>
+            <line x1="-9" y1="-9" x2="9" y2="9" stroke="#daeaf8" stroke-width=".9"/>
+            <line x1="9" y1="-9" x2="-9" y2="9" stroke="#daeaf8" stroke-width=".9"/>
+            <circle r="3" fill="white"/>
+          </g>
+          <text x="253" y="109" font-family="Cinzel,serif" font-size="10" fill="#b8d4f0" font-weight="700" text-anchor="middle" letter-spacing="5">ASTRA</text>
+          <path d="M231,57 Q253,47 275,57" stroke="#7aafd4" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <rect x="249" y="43" width="8" height="17" rx="1" fill="#2e5fa3" stroke="#7aafd4" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="car-stats">
+        <div class="cs"><div class="csv">≥48g</div><div class="csl">Minimum Weight</div></div>
+        <div class="cs"><div class="csv">CNC</div><div class="csl">Manufacturing Method</div></div>
+      </div>
+    </div>
+    <div class="eng-grid" style="margin-top:1.5rem;">
+      <div class="ec reveal"><h3>Design Philosophy</h3><p>Inspired by a comet's trajectory — swept surfaces and a tapered tail promote laminar airflow, minimising pressure drag for maximum straight-line speed.</p></div>
+      <div class="ec reveal"><h3>Livery & Branding</h3><p>Deep navy and gold — colours of the night sky and starlight. The Astra spike-star emblem features prominently on the sidepods, unified with the team identity.</p></div>
+      <div class="ec reveal"><h3>2025 Halo System</h3><p>The new Halo deceleration structure is fully integrated, engineered for optimal placement to maintain weight distribution and regulatory compliance.</p></div>
+    </div>
+  </div>
+
+  <!-- Enterprise -->
+  <div id="tab-enterprise" class="port-content">
+    <div class="ent-grid">
+      <div class="entc reveal"><h3>Team Identity & Branding</h3>
+        <ul class="el">
+          <li>Team name &amp; logo <span class="ev">Astra</span></li>
+          <li>Slogan <span class="ev">Driven by Stars</span></li>
+          <li>Colour palette <span class="ev">Navy &amp; Gold</span></li>
+          <li>Brand guidelines <span class="ev">Completed</span></li>
+          <li>Pit display design <span class="ev">Designed</span></li>
+        </ul>
+      </div>
+      <div class="entc reveal"><h3>Sponsorship &amp; Finance</h3>
+        <ul class="el">
+          <li>Proposals sent <span class="ev">8</span></li>
+          <li>Sponsors secured <span class="ev">3</span></li>
+          <li>Budget managed <span class="ev">On Track</span></li>
+          <li>Financial reporting <span class="ev">Quarterly</span></li>
+        </ul>
+      </div>
+      <div class="entc reveal"><h3>Marketing &amp; Social Media</h3>
+        <ul class="el">
+          <li>Instagram presence <span class="ev">Active</span></li>
+          <li>Build journal entries <span class="ev">12+</span></li>
+          <li>Promotional video <span class="ev">Produced</span></li>
+          <li>Press release <span class="ev">Distributed</span></li>
+        </ul>
+      </div>
+      <div class="entc reveal"><h3>Project Management</h3>
+        <ul class="el">
+          <li>Gantt chart <span class="ev">Live</span></li>
+          <li>Role allocation <span class="ev">Defined</span></li>
+          <li>Risk register <span class="ev">Maintained</span></li>
+          <li>Meeting minutes <span class="ev">Every Session</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ec reveal" style="margin-top:1.5rem;padding:2.5rem;">
+      <h3>Sustainability Commitment</h3>
+      <p style="font-size:.88rem;line-height:1.8;margin-top:.8rem;">Team Astra minimises material waste through optimised CNC nesting, repurposes offcuts for prototyping, and designed the Mk.I with a full lifecycle review — from raw material sourcing to end-of-life recyclability.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" class="bg-alt">
+  <div style="max-width:1100px;margin:0 auto;">
+    <p class="slbl reveal">The People</p>
+    <h2 class="stitle reveal">Meet the Constellation</h2>
+    <div class="divider reveal"></div>
+    <p class="ssub reveal">Five students. Five roles. One stellar team — united by a shared drive to compete, innovate, and reach the stars.</p>
+  </div>
+  <div class="team-grid">
+    <div class="tc reveal">
+      <div class="tav">YO</div>
+      <div class="tname">Yousef</div>
+      <div class="trole">Team Leader</div>
+      <p class="tdesc">Coordinates workflow, manages timelines, leads verbal presentations to judges, and ensures every deliverable lands on time.</p>
+    </div>
+    <div class="tc reveal">
+      <div class="tav">ZC</div>
+      <div class="tname">Zac</div>
+      <div class="trole">Design Engineer</div>
+      <p class="tdesc">Leads all CAD modelling, produces orthographic drawings, and runs wind tunnel analysis to optimise aerodynamic performance.</p>
+    </div>
+    <div class="tc reveal">
+      <div class="tav">AA</div>
+      <div class="tname">Aarna</div>
+      <div class="trole">Manufacturing Eng.</div>
+      <p class="tdesc">Generates CAM toolpaths, operates the CNC router, and manages all post-processing to a competition-grade finish.</p>
+    </div>
+    <div class="tc reveal">
+      <div class="tav">AL</div>
+      <div class="tname">Alana</div>
+      <div class="trole">Graphics &amp; Enterprise</div>
+      <p class="tdesc">Owns the team's visual identity, livery, pit display, social content, and leads the enterprise portfolio from sponsorship to brand strategy.</p>
+    </div>
+    <div class="tc reveal">
+      <div class="tav">JN</div>
+      <div class="tname">Jensen</div>
+      <div class="trole">Project Manager</div>
+      <p class="tdesc">Maintains the Gantt chart, risk register, and meeting minutes — keeping Astra accountable and on course.</p>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey">
+  <div style="max-width:1100px;margin:0 auto 3rem;">
+    <p class="slbl reveal">The Season</p>
+    <h2 class="stitle reveal">Our Journey</h2>
+    <div class="divider reveal"></div>
+    <p class="ssub reveal">From first concept sketch to competition day — the five phases that brought the Astra Mk.I to life.</p>
+  </div>
+  <div class="timeline reveal">
+    <div class="tli"><div class="tldot" style="--dd:0s;"></div><div class="tlph">Phase 01 — Kickoff</div><div class="tltitle">Team Formation &amp; Research</div><div class="tldesc">Roles assigned, regulations studied in depth, competitive benchmarking of past portfolios completed. Design brief established with performance targets and brand direction set.</div></div>
+    <div class="tli"><div class="tldot" style="--dd:.5s;"></div><div class="tlph">Phase 02 — Design</div><div class="tltitle">CAD Modelling &amp; Aerodynamic Analysis</div><div class="tldesc">Multiple concept iterations developed in Autodesk Inventor. Virtual wind tunnel analysis evaluated and refined the car's aerodynamic form. Final design locked after three revision rounds.</div></div>
+    <div class="tli"><div class="tldot" style="--dd:1s;"></div><div class="tlph">Phase 03 — Manufacturing</div><div class="tltitle">CNC Machining &amp; Finishing</div><div class="tldesc">CAM toolpaths generated and validated. CNC machining completed with precision tolerances. Extensive post-processing: sanding 120 to 2000 grit, priming, and multi-coat livery painting.</div></div>
+    <div class="tli"><div class="tldot" style="--dd:1.5s;"></div><div class="tlph">Phase 04 — Branding</div><div class="tltitle">Livery, Pit Display &amp; Portfolios</div><div class="tldesc">Team brand finalised. Car livery applied. Pit display designed and printed. Engineering and enterprise portfolios written, designed, and reviewed against judging criteria.</div></div>
+    <div class="tli"><div class="tldot" style="--dd:2s;"></div><div class="tlph">Phase 05 — Competition</div><div class="tltitle">Regional Finals &amp; Beyond</div><div class="tldesc">Astra competes at the Regional Finals — presenting portfolios, undergoing scrutineering, racing head-to-head, and delivering verbal presentations. Eyes firmly set on the National Finals.</div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">ASTRA</div>
+  <div class="fslogan">✦ &nbsp; Driven by Stars &nbsp; ✦</div>
+  <div class="flinks">
+    <a href="#about">About</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#team">Team</a>
+    <a href="#journey">Journey</a>
+  </div>
+  <div class="fcopy">Team Astra — STEM Racing Development Class 2025 &nbsp;·&nbsp; All rights reserved</div>
+</footer>
+
+<script>
+// Starfield
+const sf = document.getElementById('sf');
+for (let i = 0; i < 240; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const sz = Math.random() * 3.2 + 0.4;
+  s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${2+Math.random()*5}s;--o:${0.25+Math.random()*0.85};animation-delay:${Math.random()*7}s;`;
+  sf.appendChild(s);
+}
+
+// Shooting stars
+for (let i = 0; i < 8; i++) {
+  const sh = document.createElement('div');
+  sh.className = 'shoot';
+  const sxv = (10 + Math.random() * 70), syv = (5 + Math.random() * 40);
+  const ang = (25 + Math.random() * 25) * Math.PI / 180;
+  const dist = 180 + Math.random() * 280;
+  sh.style.cssText = `--sx:${sxv}vw;--sy:${syv}vh;--ex:${sxv + dist * Math.cos(ang)}px;--ey:${syv + dist * Math.sin(ang)}px;--sd:${1.2+Math.random()*1.8}s;--dl:${i*3.5+Math.random()*5}s;`;
+  document.body.appendChild(sh);
+}
+
+// Tabs
+function switchTab(id, btn) {
+  document.querySelectorAll('.port-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.port-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
